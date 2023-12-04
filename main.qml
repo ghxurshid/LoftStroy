@@ -1,7 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
-import QtQuick.Controls.Styles 1.4
 
 ApplicationWindow {
     visible: true
@@ -15,8 +14,12 @@ ApplicationWindow {
         objectName: "left-panel"
         anchors.fill: parent
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#353A40" } // Начальный цвет
-            GradientStop { position: 1.0; color: "#16171C" } // Конечный цвет
+            GradientStop {
+                position: 0.0; color: "#353A40"
+            } // Начальный цвет
+            GradientStop {
+                position: 1.0; color: "#16171C"
+            } // Конечный цвет
         }
         radius: 18
         anchors {
@@ -24,12 +27,28 @@ ApplicationWindow {
             rightMargin: parent.width - 310
         }
 
-        ComboBox {
-            id: comboBox
-            width: 200
-            model: ["Вариант 1", "Вариант 2", "Вариант 3"] // Модель данных для ComboBox
+        Column {
+            anchors.fill: parent
+            anchors.margins: 10
+            spacing: 10
 
-            // Кастомизация внешнего вида ComboBox
+            Row {
+                spacing: 10
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
+
+                ComboBox {
+                    id: comboBox
+                    width: 200
+                    anchors.verticalCenter: parent.verticalCenter
+
+
+                    model: ["Вариант 1", "Вариант 2", "Вариант 3"] // Модель данных для ComboBox
+
+                    // Кастомизация внешнего вида ComboBox
                     background: Rectangle {
                         color: "#f0f0f0"
                         border.color: "black"
@@ -50,17 +69,221 @@ ApplicationWindow {
                         height: 20
                         Rectangle {
                             anchors.centerIn: parent
+
                             width: 10
                             height: 2
                             color: comboBox.activeFocus ? "lightgreen" : "lightgray"
                         }
                     }
 
-            // Обработчик изменения выбора
-            onActivated: {
-                console.log("Выбрано: " + currentText)
+                    // Обработчик изменения выбора
+                    onActivated: {
+                        console.log("Выбрано: " + currentText)
+                    }
+                }
+
+                Item {
+                    width: 50
+                    height: 50
+
+                    Button {
+                        height: 25
+                        width: 25
+                        anchors.centerIn: parent
+                        background: Rectangle {
+                            color: "blue"
+                            radius: 12
+                        }
+
+                        Behavior on scale {
+                            // Анимация масштабирования при нажатии
+
+                        }
+
+                        onClicked: {
+                            // Изменение масштаба при нажатии
+                            myButton.scale = 0.9;
+                            // Ваш код действий при нажатии...
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                height: 2
+                color: "#969696"
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                }
+            }
+
+            Item {
+                height: 30
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                }
+            }
+
+            Row {
+                spacing: 10
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
+
+                ComboBox {
+                    width: 200
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    model: ["Вариант 1", "Вариант 2", "Вариант 3"]
+
+                    background: Rectangle {
+                        color: "#f0f0f0"
+                        border.color: "black"
+                        radius: 5
+                    }
+
+                    contentItem: Text {
+                        text: comboBox.currentText
+                        color: "blue"
+                        font.bold: true
+                        font.pixelSize: 16
+                        verticalAlignment: Text.AlignVCenter
+                        padding: 5
+                    }
+
+                    indicator: Item {
+                        width: 20
+                        height: 20
+                        Rectangle {
+                            anchors.centerIn: parent
+
+                            width: 10
+                            height: 2
+                            color: comboBox.activeFocus ? "lightgreen" : "lightgray"
+                        }
+                    }
+
+                }
+
+                Item {
+                    width: 50
+                    height: 50
+
+                    Switch {
+                        anchors.centerIn: parent
+                    }
+                }
+            }
+
+            Row {
+                spacing: 10
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
+
+                ComboBox {
+                    width: 200
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    model: ["Вариант 1", "Вариант 2", "Вариант 3"]
+
+                    background: Rectangle {
+                        color: "#f0f0f0"
+                        border.color: "black"
+                        radius: 5
+                    }
+
+                    contentItem: Text {
+                        text: comboBox.currentText
+                        color: "blue"
+                        font.bold: true
+                        font.pixelSize: 16
+                        verticalAlignment: Text.AlignVCenter
+                        padding: 5
+                    }
+
+                    indicator: Item {
+                        width: 20
+                        height: 20
+                        Rectangle {
+                            anchors.centerIn: parent
+
+                            width: 10
+                            height: 2
+                            color: comboBox.activeFocus ? "lightgreen" : "lightgray"
+                        }
+                    }
+
+                }
+
+                Item {
+                    width: 50
+                    height: 50
+
+                    Switch {
+                        anchors.centerIn: parent
+                    }
+                }
+            }
+
+            Row {
+                spacing: 10
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
+
+                ComboBox {
+                    width: 200
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    model: ["Вариант 1", "Вариант 2", "Вариант 3"]
+
+                    background: Rectangle {
+                        color: "#f0f0f0"
+                        border.color: "black"
+                        radius: 5
+                    }
+
+                    contentItem: Text {
+                        text: comboBox.currentText
+                        color: "blue"
+                        font.bold: true
+                        font.pixelSize: 16
+                        verticalAlignment: Text.AlignVCenter
+                        padding: 5
+                    }
+
+                    indicator: Item {
+                        width: 20
+                        height: 20
+                        Rectangle {
+                            anchors.centerIn: parent
+
+                            width: 10
+                            height: 2
+                            color: comboBox.activeFocus ? "lightgreen" : "lightgray"
+                        }
+                    }
+
+                }
+
+                Item {
+                    width: 50
+                    height: 50
+
+                    Switch {
+                        anchors.centerIn: parent
+                    }
+                }
             }
         }
-
     }
 }
