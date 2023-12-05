@@ -12,7 +12,11 @@ ApplicationWindow {
     // Задаем стиль для фона окна
     Rectangle {
         objectName: "left-panel"
-        anchors.fill: parent
+        anchors {
+            fill: parent
+            margins: 10
+            rightMargin: parent.width - 310
+        }
         gradient: Gradient {
             GradientStop {
                 position: 0.0; color: "#353A40"
@@ -22,10 +26,6 @@ ApplicationWindow {
             } // Конечный цвет
         }
         radius: 18
-        anchors {
-            margins: 10
-            rightMargin: parent.width - 310
-        }
 
         Column {
             anchors.fill: parent
@@ -40,9 +40,25 @@ ApplicationWindow {
                     margins: 10
                 }
 
+                Item {
+                    width: parent.width * 0.75
+                    height: 55
+
+                    Rectangle {
+                        anchors {
+                            fill: parent
+                            topMargin: 10
+                            bottomMargin: 10
+                            verticalCenter: parent.verticalCenter
+                        }
+                        radius:
+
+                    }
+                }
                 ComboBox {
                     id: comboBox
                     width: 200
+                    visible: false
                     anchors.verticalCenter: parent.verticalCenter
 
 
@@ -118,11 +134,29 @@ ApplicationWindow {
                 }
             }
 
-            Item {
-                height: 30
+            Button {
+                height: 44
                 anchors {
                     left: parent.left
                     right: parent.right
+                    margins: 10
+                }
+                background: Rectangle {
+                    color: "#68B8D1"
+                    radius: 5
+                }
+            }
+
+            Button {
+                height: 44
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
+                background: Rectangle {
+                    color: "#68B8D1"
+                    radius: 5
                 }
             }
 
@@ -285,5 +319,16 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    Image {
+        fillMode: Image.PreserveAspectFit
+        anchors {
+            fill: parent
+            margins: 10
+            leftMargin: 320
+        }
+
+        source: "resource/scape.png"
     }
 }
