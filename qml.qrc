@@ -2,5 +2,11 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>resource/scape.png</file>
+        <file>CommandButton.qml</file>
+        <file>BluetoohDevicesList.qml</file>
+        <file>ComboBoxWithSwitch.qml</file>
+        <file>BluetoothDeviceStatus.qml</file>
+        <file>SwitchButton.qml</file>
+        <file>resource/bluetooth_icon.png</file>
     </qresource>
 </RCC>

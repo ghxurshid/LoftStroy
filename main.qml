@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 
+
 ApplicationWindow {
     visible: true
     width: 1024
@@ -11,6 +12,7 @@ ApplicationWindow {
 
     // Задаем стиль для фона окна
     Rectangle {
+        id: left_panel
         objectName: "left-panel"
         anchors {
             fill: parent
@@ -32,96 +34,11 @@ ApplicationWindow {
             anchors.margins: 10
             spacing: 10
 
-            Row {
-                spacing: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
-
-                Item {
-                    width: parent.width * 0.75
-                    height: 55
-
-                    Rectangle {
-                        anchors {
-                            fill: parent
-                            topMargin: 10
-                            bottomMargin: 10
-                            verticalCenter: parent.verticalCenter
-                        }
-                        radius:
-
-                    }
-                }
-                ComboBox {
-                    id: comboBox
-                    width: 200
-                    visible: false
-                    anchors.verticalCenter: parent.verticalCenter
-
-
-                    model: ["Вариант 1", "Вариант 2", "Вариант 3"] // Модель данных для ComboBox
-
-                    // Кастомизация внешнего вида ComboBox
-                    background: Rectangle {
-                        color: "#f0f0f0"
-                        border.color: "black"
-                        radius: 5
-                    }
-
-                    contentItem: Text {
-                        text: comboBox.currentText
-                        color: "blue"
-                        font.bold: true
-                        font.pixelSize: 16
-                        verticalAlignment: Text.AlignVCenter
-                        padding: 5
-                    }
-
-                    indicator: Item {
-                        width: 20
-                        height: 20
-                        Rectangle {
-                            anchors.centerIn: parent
-
-                            width: 10
-                            height: 2
-                            color: comboBox.activeFocus ? "lightgreen" : "lightgray"
-                        }
-                    }
-
-                    // Обработчик изменения выбора
-                    onActivated: {
-                        console.log("Выбрано: " + currentText)
-                    }
-                }
-
-                Item {
-                    width: 50
-                    height: 50
-
-                    Button {
-                        height: 25
-                        width: 25
-                        anchors.centerIn: parent
-                        background: Rectangle {
-                            color: "blue"
-                            radius: 12
-                        }
-
-                        Behavior on scale {
-                            // Анимация масштабирования при нажатии
-
-                        }
-
-                        onClicked: {
-                            // Изменение масштаба при нажатии
-                            myButton.scale = 0.9;
-                            // Ваш код действий при нажатии...
-                        }
-                    }
+            BluetoothDeviceStatus {
+                id: bluetoothDeviceStatus
+                onCustomClicked: {
+                    console.log("customClicked")
+                    bluetoothDeviceList.state = bluetoothDeviceList.state == "" ? "closed" : ""
                 }
             }
 
@@ -134,190 +51,27 @@ ApplicationWindow {
                 }
             }
 
-            Button {
-                height: 44
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
-                background: Rectangle {
-                    color: "#68B8D1"
-                    radius: 5
-                }
+            CommandButton {
+
             }
 
-            Button {
-                height: 44
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
-                background: Rectangle {
-                    color: "#68B8D1"
-                    radius: 5
-                }
+            CommandButton {
+
             }
 
-            Row {
-                spacing: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
+            ComboBoxWithSwitch {}
 
-                ComboBox {
-                    width: 200
-                    anchors.verticalCenter: parent.verticalCenter
+            ComboBoxWithSwitch {}
 
-                    model: ["Вариант 1", "Вариант 2", "Вариант 3"]
+            ComboBoxWithSwitch {}
+        }
 
-                    background: Rectangle {
-                        color: "#f0f0f0"
-                        border.color: "black"
-                        radius: 5
-                    }
-
-                    contentItem: Text {
-                        text: comboBox.currentText
-                        color: "blue"
-                        font.bold: true
-                        font.pixelSize: 16
-                        verticalAlignment: Text.AlignVCenter
-                        padding: 5
-                    }
-
-                    indicator: Item {
-                        width: 20
-                        height: 20
-                        Rectangle {
-                            anchors.centerIn: parent
-
-                            width: 10
-                            height: 2
-                            color: comboBox.activeFocus ? "lightgreen" : "lightgray"
-                        }
-                    }
-
-                }
-
-                Item {
-                    width: 50
-                    height: 50
-
-                    Switch {
-                        anchors.centerIn: parent
-                    }
-                }
-            }
-
-            Row {
-                spacing: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
-
-                ComboBox {
-                    width: 200
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    model: ["Вариант 1", "Вариант 2", "Вариант 3"]
-
-                    background: Rectangle {
-                        color: "#f0f0f0"
-                        border.color: "black"
-                        radius: 5
-                    }
-
-                    contentItem: Text {
-                        text: comboBox.currentText
-                        color: "blue"
-                        font.bold: true
-                        font.pixelSize: 16
-                        verticalAlignment: Text.AlignVCenter
-                        padding: 5
-                    }
-
-                    indicator: Item {
-                        width: 20
-                        height: 20
-                        Rectangle {
-                            anchors.centerIn: parent
-
-                            width: 10
-                            height: 2
-                            color: comboBox.activeFocus ? "lightgreen" : "lightgray"
-                        }
-                    }
-
-                }
-
-                Item {
-                    width: 50
-                    height: 50
-
-                    Switch {
-                        anchors.centerIn: parent
-                    }
-                }
-            }
-
-            Row {
-                spacing: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    margins: 10
-                }
-
-                ComboBox {
-                    width: 200
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    model: ["Вариант 1", "Вариант 2", "Вариант 3"]
-
-                    background: Rectangle {
-                        color: "#f0f0f0"
-                        border.color: "black"
-                        radius: 5
-                    }
-
-                    contentItem: Text {
-                        text: comboBox.currentText
-                        color: "blue"
-                        font.bold: true
-                        font.pixelSize: 16
-                        verticalAlignment: Text.AlignVCenter
-                        padding: 5
-                    }
-
-                    indicator: Item {
-                        width: 20
-                        height: 20
-                        Rectangle {
-                            anchors.centerIn: parent
-
-                            width: 10
-                            height: 2
-                            color: comboBox.activeFocus ? "lightgreen" : "lightgray"
-                        }
-                    }
-
-                }
-
-                Item {
-                    width: 50
-                    height: 50
-
-                    Switch {
-                        anchors.centerIn: parent
-                    }
-                }
-            }
+        BluetoohDevicesList {
+            id: bluetoothDeviceList
+            anchors.left: parent.left
+            anchors.leftMargin: 16
+            anchors.top: parent.top
+            anchors.topMargin: 60
         }
     }
 
