@@ -31,3 +31,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 android {
     QMAKE_LINK += -nostdlib++
 }
+
+DISTFILES += \
+    BluetoothDeviceStatus.qml \
+    CommandButton.qml \
+    SwitchButton.qml \
+    main.qml \
+    BluetoohDevicesList.qml \
+    SelectBox.qml \
+    Model.qml

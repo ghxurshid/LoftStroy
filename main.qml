@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 
-
 ApplicationWindow {
     visible: true
     width: 1024
@@ -10,7 +9,6 @@ ApplicationWindow {
     title: "Modern Window"
     color: "#27282C"
 
-    // Задаем стиль для фона окна
     Rectangle {
         id: left_panel
         objectName: "left-panel"
@@ -22,12 +20,16 @@ ApplicationWindow {
         gradient: Gradient {
             GradientStop {
                 position: 0.0; color: "#353A40"
-            } // Начальный цвет
+            }
             GradientStop {
                 position: 1.0; color: "#16171C"
-            } // Конечный цвет
+            }
         }
         radius: 18
+
+        Model {
+            id: listModel
+        }
 
         Column {
             anchors.fill: parent
@@ -52,18 +54,74 @@ ApplicationWindow {
             }
 
             CommandButton {
-
+                id: allCommand
+                text: qsTr("ALL")
             }
 
             CommandButton {
-
+                id: randomCommand
+                text: qsTr("RANDOM")
             }
 
-            ComboBoxWithSwitch {}
+            Item {
+                height: 44
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
 
-            ComboBoxWithSwitch {}
+                SelectBox {
+                    id: entranceSelect
+                    model: listModel
+                    onActivated: {
+                        console.log(model.get(index).floorData)
+                        floorSelect.model = model.get(index).floorData
+                    }
+                }
 
-            ComboBoxWithSwitch {}
+                SwitchButton {
+
+                }
+            }
+
+            Item {
+                height: 44
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
+
+                SelectBox {
+                    id: floorSelect
+                    onActivated: {
+                        console.log(model.get(index).flatData)
+                        flatSelect.model = model.get(index).flatData
+                    }
+                }
+
+                SwitchButton {
+
+                }
+            }
+
+            Item {
+                height: 44
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
+                }
+
+                SelectBox {
+                    id: flatSelect
+                }
+
+                SwitchButton {
+
+                }
+            }
         }
 
         BluetoohDevicesList {
