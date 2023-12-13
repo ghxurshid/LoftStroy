@@ -13,28 +13,33 @@ ComboBox {
         border.width: 1
         border.color: "#4A535A"
         radius: 3
+        opacity: down ? 1 : 0.9
 
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "#323B42" } // Начальный цвет
-            GradientStop { position: 1.0; color: "#232A30" } // Конечный цвет
+            GradientStop { position: 0.0; color: "#545763" } // Начальный цвет
+            GradientStop { position: 1.0; color: "#34353D" } // Конечный цвет
         }
 
-        DropShadow {
-            anchors.fill: parent
-            horizontalOffset: 3
-            verticalOffset: 3
-            radius: 5
+        layer.enabled: true
+        layer.effect: DropShadow {
+            transparentBorder: true
+            spread: 0.2
+            radius: 8
             samples: 8
+            color: "#34353D"
         }
     }
 
     contentItem: Text {
         text: parent.currentText
-        color: "blue"
+        color: "white"
+        opacity: currentIndex > 0 ? 1 : 0.3
         font.bold: true
-        font.pixelSize: 16
+        font.pixelSize: 14
+        horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
-        padding: 5
+        padding: 10
+        elide: Text.ElideRight
     }
 
     indicator: Item {
@@ -49,21 +54,23 @@ ComboBox {
             rotation: 45
         }
     }
-    //        delegate: Item {
-    //            width: parent.width
-    //            height: 40
-    //            Text {
-    //                anchors.centerIn: parent
-    //                text: model.text // Обращение к свойству text напрямую из ListModel
-    //            }
-    //            MouseArea {
-    //                anchors.fill: parent
-    //                onClicked: {
-    //                    parent.currentText = model.text
-    //                }
-    //            }
-    //        }
+    delegate: ItemDelegate {
+        id: delegate
+        width: selectBox.width
+        text: modelData // Отображаем текст из модели данных
 
+        background: Rectangle {
+            width: selectBox.width
+            color: selectBox.currentIndex === index ? "lightblue" : "white" // Выбранный элемент будет голубым
+        }
+
+        contentItem: Text {
+            text: modelData // Отображаем текст
+            anchors.centerIn: parent
+        }
+
+        onClicked: selectBox.currentIndex = index // Выбор текущего элемента по клику
+    }
 }
 
 

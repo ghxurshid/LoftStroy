@@ -34,7 +34,7 @@ Switch {
     }
 
     onCheckedChanged:{
-        console.log(checked)
+
     }
 }
 
