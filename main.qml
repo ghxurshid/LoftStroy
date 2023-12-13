@@ -17,14 +17,8 @@ ApplicationWindow {
             margins: 10
             rightMargin: parent.width - 310
         }
-        gradient: Gradient {
-            GradientStop {
-                position: 0.0; color: "#353A40"
-            }
-            GradientStop {
-                position: 1.0; color: "#16171C"
-            }
-        }
+        clip: true
+        color: "#333C43"
         radius: 18
 
         Model {
@@ -39,7 +33,6 @@ ApplicationWindow {
             BluetoothDeviceStatus {
                 id: bluetoothDeviceStatus
                 onCustomClicked: {
-                    console.log("customClicked")
                     bluetoothDeviceList.state = bluetoothDeviceList.state == "" ? "closed" : ""
                 }
             }
@@ -75,7 +68,7 @@ ApplicationWindow {
                     id: entranceSelect
                     model: listModel
                     onActivated: {
-                        console.log(model.get(index).floorData)
+                        if (index === 0) apartmentSelect.model = null
                         floorSelect.model = model.get(index).floorData
                     }
                 }
@@ -96,8 +89,7 @@ ApplicationWindow {
                 SelectBox {
                     id: floorSelect
                     onActivated: {
-                        console.log(model.get(index).flatData)
-                        flatSelect.model = model.get(index).flatData
+                        apartmentSelect.model = model.get(index).flatData
                     }
                 }
 
@@ -115,14 +107,23 @@ ApplicationWindow {
                 }
 
                 SelectBox {
-                    id: flatSelect
+                    id: apartmentSelect
                 }
 
                 SwitchButton {
 
                 }
             }
+
+            Image {
+                id: name
+                height: 33
+                width: 179
+                source: "img/selectbox_background.png"
+            }
         }
+
+
 
         BluetoohDevicesList {
             id: bluetoothDeviceList
@@ -141,6 +142,6 @@ ApplicationWindow {
             leftMargin: 320
         }
 
-        source: "resource/scape.png"
+        source: apartmentSelect.currentIndex > 0 ? apartmentSelect.model.get(apartmentSelect.currentIndex).image : floorSelect.currentIndex > 0 ? "qrc:/img/plan.png" : entranceSelect.currentIndex > 0 ? "qrc:/img/plan.png" : "qrc:/img/logo.jpg"
     }
 }

@@ -2,41 +2,27 @@ import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 
+
 Switch {
+    id: switchButton
     anchors.fill: parent
     anchors.leftMargin: parent.width * 0.80
     indicator: Rectangle {
         id: switchIndicator
-        color: "black"
+        color: "#333333"
         height: 14
         width: 14
         radius: 7
-        state: "off"
         anchors.verticalCenter: parent.verticalCenter
-
-        states: [
-            State {
-                name: "on"
-                PropertyChanges {
-                    target: switchIndicator
-                    x: 0
-                }
-            },
-            State {
-                name: "off"
-                PropertyChanges {
-                    target: switchIndicator
-                    x: 20
-                }
-            }
-        ]
+        x: 9 + switchButton.visualPosition * (backgroud.width - 20)
 
         Behavior on x {
-            NumberAnimation { duration: 100; easing.type: Easing.OutCubic }
+            NumberAnimation { duration: 150; easing.type: Easing.OutCubic }
         }
     }
 
     background: Rectangle {
+        id: backgroud
         width: 40
         height: 20
         radius: 10
@@ -45,11 +31,10 @@ Switch {
             centerIn: parent
             verticalCenter: parent.verticalCenter
         }
+    }
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: switchIndicator.state = switchIndicator.state == "on" ? "off" : "on"
-        }
+    onCheckedChanged:{
+        console.log(checked)
     }
 }
 

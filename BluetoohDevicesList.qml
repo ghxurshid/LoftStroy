@@ -113,7 +113,7 @@ Rectangle {
                         anchors.centerIn: parent
                         height: 20
                         width: 20
-                        source: "resource/bluetooth_icon.png"
+                        source: "qrc:/img/bluetooth_icon.png"
                     }
                 }
 
