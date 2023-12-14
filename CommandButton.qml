@@ -64,7 +64,7 @@ Button {
 
     contentItem: Text {
         text: parent.text // Используем текст кнопки
-        color: "white"
+        color: "#CFD8DF"
         font.bold: true
         font.pixelSize: 16
         horizontalAlignment: Text.AlignLeft // Выравнивание текста влево

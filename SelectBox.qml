@@ -11,7 +11,7 @@ ComboBox {
         anchors.fill: selectBox
         color: "#2A333A"
         border.width: 1
-        border.color: "#4A535A"
+        border.color: "#232A30"
         radius: 3
 
         gradient: Gradient {
@@ -19,22 +19,26 @@ ComboBox {
             GradientStop { position: 1.0; color: "#232A30" } // Конечный цвет
         }
 
-        DropShadow {
-            anchors.fill: parent
-            horizontalOffset: 3
-            verticalOffset: 3
-            radius: 5
-            samples: 8
+        layer.enabled: true
+        layer.effect: DropShadow {
+            transparentBorder: true
+            radius: 2.0
+            samples: 1 + radius * 2
+            spread: 0.3
+
         }
     }
 
     contentItem: Text {
         text: parent.currentText
-        color: "blue"
+        color: "#CFD8DF"
         font.bold: true
         font.pixelSize: 16
-        verticalAlignment: Text.AlignVCenter
-        padding: 5
+        horizontalAlignment: Text.AlignLeft // Выравнивание текста влево
+        verticalAlignment: Text.AlignVCenter // Вертикальное выравнивание по центру
+        padding: 10 // Отступы текста от краев кнопки
+        elide: Text.ElideRight // Обрезание текста, если он не помещается в кнопку
+        width: parent.width // Ширина текста равна ширине родительского элемента (Button)
     }
 
     indicator: Item {
