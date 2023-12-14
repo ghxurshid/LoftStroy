@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtBluetooth 5.9
 
 Rectangle {
     id: listCompanent
@@ -73,9 +74,6 @@ Rectangle {
         }
     }
 
-    BluetoohSocket {
-        id: socket
-    }
 
     ListModel {
         id: listModel

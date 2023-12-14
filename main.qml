@@ -44,7 +44,7 @@ ApplicationWindow {
                     left: parent.left
                     right: parent.right
                 }
-            }
+            }            
 
             CommandButton {
                 id: allCommand
@@ -122,8 +122,6 @@ ApplicationWindow {
                 source: "img/selectbox_background.png"
             }
         }
-
-
 
         BluetoohDevicesList {
             id: bluetoothDeviceList
