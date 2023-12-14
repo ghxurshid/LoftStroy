@@ -30,6 +30,7 @@ Switch {
         anchors {
             centerIn: parent
             verticalCenter: parent.verticalCenter
+            fill: parent
         }
     }
 

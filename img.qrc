@@ -17,6 +17,5 @@
         <file>img/bluetooth_icon.png</file>
         <file>img/plan.png</file>
         <file>img/logo.jpg</file>
-        <file>img/background.png</file>
     </qresource>
 </RCC>

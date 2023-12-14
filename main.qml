@@ -44,7 +44,7 @@ ApplicationWindow {
                     left: parent.left
                     right: parent.right
                 }
-            }
+            }            
 
             CommandButton {
                 id: allCommand
@@ -113,6 +113,13 @@ ApplicationWindow {
                 SwitchButton {
 
                 }
+            }
+
+            Image {
+                id: name
+                height: 33
+                width: 179
+                source: "img/selectbox_background.png"
             }
         }
 
