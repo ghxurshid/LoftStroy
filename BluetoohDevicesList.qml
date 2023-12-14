@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtBluetooth 5.2
+import BluetoothDeviceListModelModule 1.0
+
 
 Rectangle {
     id: listCompanent
@@ -74,29 +76,6 @@ Rectangle {
         }
     }
 
-    BluetoohSocket {
-        id: socket
-    }
-
-    ListModel {
-        id: listModel
-        ListElement {
-            category: "Connected"; name: "Device 6 (Connected)"
-        }
-        ListElement {
-            category: "Connected"; name: "Device 7 (Connected)"
-        }
-        ListElement {
-            category: "Available"; name: "Device 3 (Available)"
-        }
-        ListElement {
-            category: "Available"; name: "Device 4 (Available)"
-        }
-        ListElement {
-            category: "New"; name: "Device 5 (New)"
-        }
-    }
-
     ListView {
         id: listContent
         width: parent.width
@@ -106,7 +85,7 @@ Rectangle {
         }
         clip: true
 
-        model: btModel
+        model: BluetoothDeviceListModel {}
 
         section {
             property: "category"
