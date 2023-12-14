@@ -60,13 +60,11 @@ Button {
         ]
     }
 
-
-
     contentItem: Text {
         text: parent.text // Используем текст кнопки
         color: "#CFD8DF"
         font.bold: true
-        font.pixelSize: 16
+        font.pixelSize: 14
         horizontalAlignment: Text.AlignLeft // Выравнивание текста влево
         verticalAlignment: Text.AlignVCenter // Вертикальное выравнивание по центру
         padding: 10 // Отступы текста от краев кнопки

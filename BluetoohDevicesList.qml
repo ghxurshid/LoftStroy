@@ -50,6 +50,52 @@ Rectangle {
         }
     }
 
+    BluetoothDiscoveryModel {
+        id: btModel
+        running: true
+        discoveryMode: BluetoothDiscoveryModel.DeviceDiscovery
+        onDiscoveryModeChanged: console.log("Discovery mode: " + discoveryMode)
+        onServiceDiscovered: console.log("Found new service " + service.deviceAddress + " " + service.deviceName + " " + service.serviceName);
+        onDeviceDiscovered: console.log("New device: " + device)
+        onErrorChanged: {
+            switch (btModel.error) {
+            case BluetoothDiscoveryModel.PoweredOffError:
+                console.log("Error: Bluetooth device not turned on"); break;
+            case BluetoothDiscoveryModel.InputOutputError:
+                console.log("Error: Bluetooth I/O Error"); break;
+            case BluetoothDiscoveryModel.InvalidBluetoothAdapterError:
+                console.log("Error: Invalid Bluetooth Adapter Error"); break;
+            case BluetoothDiscoveryModel.NoError:
+                break;
+            default:
+                console.log("Error: Unknown Error"); break;
+            }
+        }
+    }
+
+    BluetoohSocket {
+        id: socket
+    }
+
+    ListModel {
+        id: listModel
+        ListElement {
+            category: "Connected"; name: "Device 6 (Connected)"
+        }
+        ListElement {
+            category: "Connected"; name: "Device 7 (Connected)"
+        }
+        ListElement {
+            category: "Available"; name: "Device 3 (Available)"
+        }
+        ListElement {
+            category: "Available"; name: "Device 4 (Available)"
+        }
+        ListElement {
+            category: "New"; name: "Device 5 (New)"
+        }
+    }
+
     ListView {
         id: listContent
         width: parent.width
@@ -59,23 +105,7 @@ Rectangle {
         }
         clip: true
 
-        model: ListModel {
-            ListElement {
-                category: "Connected"; name: "Device 6 (Connected)"
-            }
-            ListElement {
-                category: "Connected"; name: "Device 7 (Connected)"
-            }
-            ListElement {
-                category: "Available"; name: "Device 3 (Available)"
-            }
-            ListElement {
-                category: "Available"; name: "Device 4 (Available)"
-            }
-            ListElement {
-                category: "New"; name: "Device 5 (New)"
-            }
-        }
+        model: btModel
 
         section {
             property: "category"
