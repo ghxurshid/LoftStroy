@@ -29,8 +29,7 @@ Switch {
         color: "#62C2FF"
         anchors {
             centerIn: parent
-            verticalCenter: parent.verticalCenter
-            fill: parent
+            verticalCenter: parent.verticalCenter            
         }
     }
 

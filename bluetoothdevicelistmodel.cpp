@@ -2,20 +2,15 @@
 
 BluetoothDeviceListModel::BluetoothDeviceListModel(QObject *parent)
     : QAbstractListModel(parent) {
-    // Здесь можно добавить начальные данные в модель
-    m_data.append("Item 1");
-    m_data.append("Item 2");
-    m_data.append("Item 3");
-
-    QObject::connect(&m_agent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, &BluetoothDeviceListModel::onDeviceDiscovered);
-    QObject::connect(&m_agent, &QBluetoothDeviceDiscoveryAgent::deviceUpdated, &BluetoothDeviceListModel::onDeviceUpdated);
+    QObject::connect(&m_agent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BluetoothDeviceListModel::onDeviceDiscovered);
+    QObject::connect(&m_agent, &QBluetoothDeviceDiscoveryAgent::deviceUpdated, this, &BluetoothDeviceListModel::onDeviceUpdated);
     m_agent.start();
 }
 
 int BluetoothDeviceListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return m_data.count();
+    return m_agent.discoveredDevices().count();
 }
 
 QVariant BluetoothDeviceListModel::data(const QModelIndex &index, int role) const
@@ -23,11 +18,22 @@ QVariant BluetoothDeviceListModel::data(const QModelIndex &index, int role) cons
     if (!index.isValid())
         return QVariant();
 
-    if (index.row() < 0 || index.row() >= m_data.count())
+    if (index.row() < 0 || index.row() >= m_agent.discoveredDevices().count())
         return QVariant();
 
+    auto device = m_agent.discoveredDevices()[index.row()];
+
     if (role == Name)
-        return m_data[index.row()];
+        return device.name();
+
+    if (role == Address)
+        return device.address().toString();
+
+    if (role == Rssi)
+        return device.rssi();
+
+    if (role == IsValid)
+        return device.isValid();
 
     return QVariant();
 }
@@ -39,7 +45,6 @@ void BluetoothDeviceListModel::onDeviceDiscovered(const QBluetoothDeviceInfo &de
     auto discoveredDevices = m_agent.discoveredDevices();
     beginInsertRows(QModelIndex(), discoveredDevices.count(), discoveredDevices.count());
     endInsertRows();
-
 }
 
 void BluetoothDeviceListModel::onDeviceUpdated(const QBluetoothDeviceInfo &deviceInfo, QBluetoothDeviceInfo::Fields updatedFields)
@@ -56,5 +61,8 @@ QHash<int, QByteArray> BluetoothDeviceListModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[Name] = "name";
+    roles[Address] = "address";
+    roles[Rssi] = "rssi";
+    roles[IsValid] = "isValid";
     return roles;
 }

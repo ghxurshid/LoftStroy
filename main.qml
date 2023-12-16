@@ -114,13 +114,6 @@ ApplicationWindow {
 
                 }
             }
-
-            Image {
-                id: name
-                height: 33
-                width: 179
-                source: "img/selectbox_background.png"
-            }
         }
 
         BluetoohDevicesList {

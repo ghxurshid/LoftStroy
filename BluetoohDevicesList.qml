@@ -53,29 +53,6 @@ Rectangle {
         }
     }
 
-    BluetoothDiscoveryModel {
-        id: btModel
-        running: true
-        discoveryMode: BluetoothDiscoveryModel.DeviceDiscovery
-        onDiscoveryModeChanged: console.log("Discovery mode: " + discoveryMode)
-        onServiceDiscovered: console.log("Found new service " + service.deviceAddress + " " + service.deviceName + " " + service.serviceName);
-        onDeviceDiscovered: console.log("New device: " + device)
-        onErrorChanged: {
-            switch (btModel.error) {
-            case BluetoothDiscoveryModel.PoweredOffError:
-                console.log("Error: Bluetooth device not turned on"); break;
-            case BluetoothDiscoveryModel.InputOutputError:
-                console.log("Error: Bluetooth I/O Error"); break;
-            case BluetoothDiscoveryModel.InvalidBluetoothAdapterError:
-                console.log("Error: Invalid Bluetooth Adapter Error"); break;
-            case BluetoothDiscoveryModel.NoError:
-                break;
-            default:
-                console.log("Error: Unknown Error"); break;
-            }
-        }
-    }
-
     ListView {
         id: listContent
         width: parent.width
@@ -87,26 +64,26 @@ Rectangle {
 
         model: BluetoothDeviceListModel {}
 
-        section {
-            property: "category"
-            criteria: ViewSection.FullString
-            delegate: Item {
-                height: 30
-                width: parent.width
+//        section {
+//            property: "category"
+//            criteria: ViewSection.FullString
+//            delegate: Item {
+//                height: 30
+//                width: parent.width
 
-                Text {
-                    id: pairedSectionText
-                    color: "#FEFFFF"
-                    text: qsTr("Paired devices")
-                    font.bold: true
-                    anchors {
-                        left: parent.left
-                        leftMargin: 10
-                        verticalCenter: parent.verticalCenter
-                    }
-                }
-            }
-        }
+//                Text {
+//                    id: pairedSectionText
+//                    color: "#FEFFFF"
+//                    text: qsTr("Paired devices")
+//                    font.bold: true
+//                    anchors {
+//                        left: parent.left
+//                        leftMargin: 10
+//                        verticalCenter: parent.verticalCenter
+//                    }
+//                }
+//            }
+//        }
 
         delegate: Item {
             width: parent.width
