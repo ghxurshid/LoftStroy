@@ -14,7 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    bluetoothdevicelistmodel.cpp
+    bluetoothdevicelistmodel.cpp \
+    bluetoothlocaldevice.cpp
 
 RESOURCES += qml.qrc \
     img.qrc
@@ -44,4 +45,5 @@ DISTFILES += \
     Model.qml
 
 HEADERS += \
-    bluetoothdevicelistmodel.h
+    bluetoothdevicelistmodel.h \
+    bluetoothlocaldevice.h

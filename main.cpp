@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+
+#include "bluetoothlocaldevice.h"
 #include "bluetoothdevicelistmodel.h"
 
 int main(int argc, char *argv[])
@@ -8,6 +10,7 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    qmlRegisterType<BluetoothLocalDevice>("BluetoothLocalDeviceModule", 1, 0, "BluetoothLocalDevice");
     qmlRegisterType<BluetoothDeviceListModel>("BluetoothDeviceListModelModule", 1, 0, "BluetoothDeviceListModel");
 
 

@@ -2,6 +2,8 @@
 #define BLUETOOTHLOCALDEVICE_H
 
 #include <QObject>
+#include <QBluetoothLocalDevice>
+#include <QBluetoothDeviceInfo>
 
 class BluetoothLocalDevice : public QObject
 {
@@ -12,6 +14,11 @@ public:
 signals:
 
 public slots:
+    void onSelected(const QBluetoothDeviceInfo deviceInfo);
+
+private:
+    QBluetoothDeviceInfo m_selectedDevice;
+    QBluetoothLocalDevice m_localDevice;
 };
 
 #endif // BLUETOOTHLOCALDEVICE_H

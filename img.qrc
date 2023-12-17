@@ -17,5 +17,8 @@
         <file>img/bluetooth_icon.png</file>
         <file>img/plan.png</file>
         <file>img/logo.jpg</file>
+        <file>img/bluetooth_enabled.png</file>
+        <file>img/bluetooth_connecting.png</file>
+        <file>img/bluetooth_disabled.png</file>
     </qresource>
 </RCC>

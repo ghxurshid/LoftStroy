@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import BluetoothLocalDeviceModule 1.0
 
 Row {
     id: row
@@ -12,6 +13,7 @@ Row {
     }
 
     signal customClicked()
+    property BluetoothLocalDevice localDevice
 
     Item {
         width: parent.width * 0.75
@@ -21,8 +23,8 @@ Row {
             anchors {
                 centerIn: parent
                 fill: parent
-                topMargin: 10
-                bottomMargin: 10
+                topMargin: 5
+                bottomMargin: 5
             }
             radius: 10
 
@@ -37,24 +39,52 @@ Row {
         width: 50
         height: 50
 
-        Button {
-            height: 25
-            width: 25
+        RoundButton {
+            id: button
+            height: 40
+            width: 40
             anchors.centerIn: parent
-            background: Rectangle {
-                color: "blue"
-                radius: 12
+            background: Image {
+                id: backgroundImage
+                anchors.fill: parent
+                source: "img/bluetooth_disabled.png"
             }
+            scale: pressed ? 1.1 : 1
+            state: "disabled"
 
             Behavior on scale {
-                // Анимация масштабирования при нажатии
+                NumberAnimation { duration: 100; easing.type: Easing.Linear }
             }
 
             onClicked: {
-                // Изменение масштаба при нажатии
-                myButton.scale = 0.9;
-                // Ваш код действий при нажатии...
+                state = state == "disabled" ? "connecting" :
+                        state == "connecting" ? "enabled" : "disabled"
             }
+
+            states: [
+                State {
+                    name: "disabled"
+                    PropertyChanges {
+                        target: backgroundImage
+                        source: "img/bluetooth_disabled.png"
+                    }
+                },
+                State {
+                    name: "connecting"
+                    PropertyChanges {
+                        target: backgroundImage
+                        source: "img/bluetooth_connecting.png"
+                    }
+
+                },
+                State {
+                    name: "enabled"
+                    PropertyChanges {
+                        target: backgroundImage
+                        source: "img/bluetooth_enabled.png"
+                    }
+                }
+            ]
         }
     }
 }

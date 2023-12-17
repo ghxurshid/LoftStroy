@@ -1,25 +1,33 @@
-import QtQuick 2.0
-import QtBluetooth 5.2
+import QtQuick 2.11
+import QtQuick.Controls 2.4
 import BluetoothDeviceListModelModule 1.0
 
+ListView {
+    id: listView
 
-Rectangle {
-    id: listCompanent
-    color: "#292F3F"
-    radius: 10
     width: 260
     height: 400
     clip: true
     state: "closed"
-    onFocusChanged: {
-        if (!focus) state = closed
+
+    headerPositioning: ListView.OverlayFooter
+    footerPositioning: ListView.OverlayFooter
+
+    Rectangle {
+        id: background
+        color: "#292F3F"
+        radius: 10
+        anchors.fill: parent
+        z: -1
     }
 
-    Item {
+    header: Rectangle {
         id: header
         height: 40
         width: parent.width
-        anchors.top: parent.top
+        color: "#292F3F"
+        radius: 10
+        z: 2
 
         Text {
             id: headerText
@@ -53,88 +61,104 @@ Rectangle {
         }
     }
 
-    ListView {
-        id: listContent
+    delegate: Item {
         width: parent.width
-        anchors {
-            top: header.bottom
-            bottom: footer.top
-        }
-        clip: true
+        height: 44
+        z: 1
 
-        model: BluetoothDeviceListModel {}
+        Item {
+            id: iconSection
+            height: 40
+            width: 40
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 5
 
-//        section {
-//            property: "category"
-//            criteria: ViewSection.FullString
-//            delegate: Item {
-//                height: 30
-//                width: parent.width
-
-//                Text {
-//                    id: pairedSectionText
-//                    color: "#FEFFFF"
-//                    text: qsTr("Paired devices")
-//                    font.bold: true
-//                    anchors {
-//                        left: parent.left
-//                        leftMargin: 10
-//                        verticalCenter: parent.verticalCenter
-//                    }
-//                }
-//            }
-//        }
-
-        delegate: Item {
-            width: parent.width
-            height: 44
-
-            Row {
-                anchors.fill: parent
-
-                Item {
-                    height: 40
-                    width: 40
-
-                    Image {
-                        anchors.centerIn: parent
-                        height: 20
-                        width: 20
-                        source: "qrc:/img/bluetooth_icon.png"
-                    }
-                }
-
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: model.name
-                    color: "white"
-                }
+            Image {
+                anchors.centerIn: parent
+                height: 20
+                width: 20
+                source: "qrc:/img/bluetooth_icon.png"
             }
+        }
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    console.log("You have pressed: " + model.name)
-                }
+        Text {
+            id: name
+            text: model.name !== "" ? model.name : model.address
+            color: "white"
+            anchors {
+                top: parent.top
+                left: iconSection.right
+                topMargin: 5
+            }
+            font {
+                pixelSize: 14
+                bold: true
+            }
+        }
+
+        Text {
+            id: address
+            text: model.address
+            color: "white"
+            visible: model.name !== ""
+            anchors {
+                bottom: parent.bottom
+                left: iconSection.right
+                bottomMargin: 5
+            }
+            font {
+                pixelSize: 12
+                italic: true
+            }
+        }
+
+        Text {
+            id: rssi
+            text: model.rssi + " dBm"
+            color: "white"
+            anchors {
+                right: parent.right
+                verticalCenter: parent.verticalCenter
+                rightMargin: 15
+            }
+            font {
+                pixelSize: 16
+                bold: true
+            }
+        }
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: {
+                listView.model.select(model.index)
+                listView.state = "closed"
             }
         }
     }
 
-    Rectangle {
+    footer: Item {
         id: footer
-        height: 55
+        height: 44
         width: parent.width
-        color: "#2B2E35"
-        anchors.bottom: parent.bottom
+        z: 2
 
-        Text {
-            id: footerText
-            text: qsTr("More Bluetooth settings")
-            color: "#2D78D5"
-            anchors {
-                left: parent.left
-                leftMargin: 10
-                verticalCenter: parent.verticalCenter
+        Rectangle {
+            height: parent.height + 10
+            width: parent.width
+            anchors.bottom: parent.bottom
+            color: "#2B2E35"
+            radius: 10
+
+            Text {
+                id: footerText
+                text: qsTr("More Bluetooth settings")
+                color: "#2D78D5"
+                anchors {
+                    left: parent.left
+                    leftMargin: 10
+                    verticalCenter: parent.verticalCenter
+                }
             }
         }
     }
@@ -143,7 +167,7 @@ Rectangle {
         State {
             name: "closed"
             PropertyChanges {
-                target: listCompanent
+                target: listView
                 height: 0
             }
         }

@@ -1,6 +1,8 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import BluetoothDeviceListModelModule 1.0
+import BluetoothLocalDeviceModule 1.0
 
 ApplicationWindow {
     visible: true
@@ -32,6 +34,7 @@ ApplicationWindow {
 
             BluetoothDeviceStatus {
                 id: bluetoothDeviceStatus
+                localDevice: BluetoothLocalDevice {}
                 onCustomClicked: {
                     bluetoothDeviceList.state = bluetoothDeviceList.state == "" ? "closed" : ""
                 }
@@ -44,7 +47,7 @@ ApplicationWindow {
                     left: parent.left
                     right: parent.right
                 }
-            }            
+            }
 
             CommandButton {
                 id: allCommand
@@ -118,6 +121,13 @@ ApplicationWindow {
 
         BluetoohDevicesList {
             id: bluetoothDeviceList
+            model: BluetoothDeviceListModel {
+                id: bluetoothModel
+
+                onSelected: {
+                    bluetoothDeviceStatus.localDevice.onSelected(deviceInfo)
+                }
+            }
             anchors.left: parent.left
             anchors.leftMargin: 16
             anchors.top: parent.top
