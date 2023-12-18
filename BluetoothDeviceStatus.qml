@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.0
 import BluetoothLocalDeviceModule 1.0
 
 Row {
@@ -26,11 +27,46 @@ Row {
                 topMargin: 5
                 bottomMargin: 5
             }
-            radius: 10
+            color: "#2A333A"
+            border.width: 1
+            border.color: "#232A30"
+            radius: 3
+
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#323B42" } // Начальный цвет
+                GradientStop { position: 1.0; color: "#232A30" } // Конечный цвет
+            }
+
+            layer.enabled: true
+            layer.effect: DropShadow {
+                transparentBorder: true
+                radius: 2.0
+                samples: 1 + radius * 2
+                spread: 0.3
+
+            }
 
             MouseArea {
                 anchors.fill: parent
                 onClicked: row.customClicked()
+            }
+        }
+
+        Text {
+            id: statusText
+            text: localDevice.name
+            color: localDevice.status === 0 ? "#00C61A" : "#CFD8DF"
+            font.bold: true
+            font.pixelSize: 14
+            horizontalAlignment: Text.AlignLeft // Выравнивание текста влево
+            verticalAlignment: Text.AlignVCenter // Вертикальное выравнивание по центру
+            padding: 10 // Отступы текста от краев кнопки
+            elide: Text.ElideRight // Обрезание текста, если он не помещается в кнопку
+            width: parent.width // Ширина текста равна ширине родительского элемента (Button)
+            anchors {
+                left: parent.left
+                leftMargin: 10
+                verticalCenter: parent.verticalCenter
             }
         }
     }
@@ -58,7 +94,7 @@ Row {
 
             onClicked: {
                 state = state == "disabled" ? "connecting" :
-                        state == "connecting" ? "enabled" : "disabled"
+                                              state == "connecting" ? "enabled" : "disabled"
             }
 
             states: [
@@ -68,6 +104,7 @@ Row {
                         target: backgroundImage
                         source: "img/bluetooth_disabled.png"
                     }
+                    when: localDevice.status = 2
                 },
                 State {
                     name: "connecting"
@@ -75,6 +112,7 @@ Row {
                         target: backgroundImage
                         source: "img/bluetooth_connecting.png"
                     }
+                    when: localDevice.status = 1
 
                 },
                 State {
@@ -83,6 +121,7 @@ Row {
                         target: backgroundImage
                         source: "img/bluetooth_enabled.png"
                     }
+                    when: localDevice.status = 0
                 }
             ]
         }
