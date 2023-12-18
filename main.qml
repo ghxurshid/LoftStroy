@@ -70,9 +70,8 @@ ApplicationWindow {
                 SelectBox {
                     id: entranceSelect
                     model: listModel
-                    onActivated: {
-                        if (index === 0) apartmentSelect.model = null
-                        floorSelect.model = model.get(index).floorData
+                    onCurrentIndexChanged: {
+                        floorSelect.model = model.get(currentIndex).floorData
                     }
                 }
 
@@ -91,8 +90,10 @@ ApplicationWindow {
 
                 SelectBox {
                     id: floorSelect
-                    onActivated: {
-                        apartmentSelect.model = model.get(index).flatData
+                    onCurrentIndexChanged: {
+                        console.log(currentIndex)
+                        var flatModel = currentIndex >= 0 ? model.get(currentIndex).flatData : null
+                        apartmentSelect.model = flatModel
                     }
                 }
 
