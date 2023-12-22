@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QBluetoothSocket>
 #include <QBluetoothDeviceInfo>
+#include <QBluetoothLocalDevice>
 
 class BluetoothLocalDevice : public QObject
 {
@@ -28,10 +29,10 @@ public slots:
     void onDeviceConnected();
     void onDeviceDisconnected();
     void onStateChanged(QBluetoothSocket::SocketState state);
-    void onErrorOccured2(QBluetoothSocket::SocketError error);
+    void onErrorOccured(QBluetoothSocket::SocketError error);
 
     void sendData(bool allPressed, bool randPressed, bool entOn, bool floorOn,
-                  bool flatOn, int entValue, int floorValue, int flatValue);
+                  bool flatOn,  int entValue,  int floorValue, int flatValue);
 
 protected:
     void setStatus(int value);
@@ -40,7 +41,8 @@ protected:
 private:
     int m_status;
     QBluetoothSocket m_socket;
-    QBluetoothDeviceInfo m_selectedDevice;    
+    QBluetoothDeviceInfo m_selectedDevice;
+    QBluetoothLocalDevice m_localDevice;
 };
 
 #endif // BLUETOOTHLOCALDEVICE_H

@@ -77,8 +77,8 @@ Row {
 
         RoundButton {
             id: button
-            height: 40
-            width: 40
+            height: 50
+            width: 50
             anchors.centerIn: parent
             background: Image {
                 id: backgroundImage
@@ -124,6 +124,25 @@ Row {
                     when: localDevice.status = 0
                 }
             ]
+
+            SequentialAnimation {
+                running: localDevice.status === 1 || true
+                loops: Animation.Infinite
+
+                NumberAnimation {
+                    target: backgroundImage
+                    property: "opacity"
+                    to: 0.4
+                    duration: 800
+                }
+
+                NumberAnimation {
+                    target: backgroundImage
+                    property: "opacity"
+                    to: 1
+                    duration: 800
+                }
+            }
         }
     }
 }
