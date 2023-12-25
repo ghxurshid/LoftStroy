@@ -20,5 +20,7 @@
         <file>img/bluetooth_enabled.png</file>
         <file>img/bluetooth_connecting.png</file>
         <file>img/bluetooth_disabled.png</file>
+        <file>img/apartment_15.jpg</file>
+        <file>img/apartment_16.jpg</file>
     </qresource>
 </RCC>

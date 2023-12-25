@@ -18,8 +18,8 @@ BluetoothDeviceListModel::BluetoothDeviceListModel(QObject *parent)
 
     if (QSysInfo::productType() == "windows")
     {
-        m_devices.append(QBluetoothDeviceInfo(QBluetoothAddress("00:11:22:33:44:55"), QString("Device 1"), 5));
-        m_devices.append(QBluetoothDeviceInfo(QBluetoothAddress("55:44:33:22:11:00"), QString("Device 2"), 10));
+        m_devices.append(QBluetoothDeviceInfo(QBluetoothAddress("00:11:22:33:44:55"), QString("Device 123456789456789123456"), 5));
+        m_devices.append(QBluetoothDeviceInfo(QBluetoothAddress("55:44:33:22:11:00"), QString("Device 265986522548754123145"), 10));
     }
 
     m_agent.start();

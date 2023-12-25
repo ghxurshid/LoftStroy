@@ -86,10 +86,13 @@ ListView {
             id: name
             text: model.name !== "" ? model.name : model.address
             color: "white"
+            elide: Text.ElideRight
             anchors {
                 top: parent.top
                 left: iconSection.right
+                right: rssi.left
                 topMargin: 5
+                rightMargin: 5
             }
             font {
                 pixelSize: 14
@@ -103,9 +106,12 @@ ListView {
             color: "white"
             visible: model.name !== ""
             anchors {
-                bottom: parent.bottom
                 left: iconSection.right
+                right: rssi.left
+                bottom: parent.bottom
+                rightMargin: 5
                 bottomMargin: 5
+
             }
             font {
                 pixelSize: 12
@@ -125,6 +131,10 @@ ListView {
             font {
                 pixelSize: 16
                 bold: true
+            }
+
+            Component.onCompleted: {
+                console.log(rssi.width)
             }
         }
         MouseArea {

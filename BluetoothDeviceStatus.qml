@@ -43,7 +43,6 @@ Row {
                 radius: 2.0
                 samples: 1 + radius * 2
                 spread: 0.3
-
             }
 
             MouseArea {
@@ -86,15 +85,13 @@ Row {
                 source: "img/bluetooth_disabled.png"
             }
             scale: pressed ? 1.1 : 1
-            state: "disabled"
 
             Behavior on scale {
                 NumberAnimation { duration: 100; easing.type: Easing.Linear }
             }
 
             onClicked: {
-                state = state == "disabled" ? "connecting" :
-                                              state == "connecting" ? "enabled" : "disabled"
+                localDevice.buttonClick()
             }
 
             states: [
@@ -103,8 +100,9 @@ Row {
                     PropertyChanges {
                         target: backgroundImage
                         source: "img/bluetooth_disabled.png"
+                        opacity: 1
                     }
-                    when: localDevice.status = 2
+                    when: localDevice.status === 2
                 },
                 State {
                     name: "connecting"
@@ -112,7 +110,7 @@ Row {
                         target: backgroundImage
                         source: "img/bluetooth_connecting.png"
                     }
-                    when: localDevice.status = 1
+                    when: localDevice.status === 1
 
                 },
                 State {
@@ -120,13 +118,14 @@ Row {
                     PropertyChanges {
                         target: backgroundImage
                         source: "img/bluetooth_enabled.png"
+                        opacity: 1
                     }
-                    when: localDevice.status = 0
+                    when: localDevice.status === 0
                 }
             ]
 
             SequentialAnimation {
-                running: localDevice.status === 1 || true
+                running: localDevice.status === 1
                 loops: Animation.Infinite
 
                 NumberAnimation {

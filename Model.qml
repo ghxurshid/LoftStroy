@@ -182,6 +182,13 @@ ListModel {
                     ListElement { modelData: "Квартира 90"; image: "img/apartment_6.jpg" },
                     ListElement { modelData: "Квартира 91"; image: "img/apartment_7.jpg" }
                 ]
+            },
+            ListElement {
+                modelData: "Этаж 16"
+                flatData: [
+                    ListElement { modelData: "Выберите квартиру"; image: "img/apartment_1.jpg" },
+                    ListElement { modelData: "Квартира 184"; image: "img/apartment_15.jpg" }
+                ]
             }
         ]
     }
@@ -359,6 +366,13 @@ ListModel {
                     ListElement { modelData: "Квартира 181"; image: "img/apartment_12.jpg" },
                     ListElement { modelData: "Квартира 182"; image: "img/apartment_13.jpg" },
                     ListElement { modelData: "Квартира 183"; image: "img/apartment_14.jpg" }
+                ]
+            },
+            ListElement {
+                modelData: "Этаж 16"
+                flatData: [
+                    ListElement { modelData: "Выберите квартиру"; image: "img/apartment_1.jpg" },
+                    ListElement { modelData: "Квартира 185"; image: "img/apartment_16.jpg" }
                 ]
             }
         ]

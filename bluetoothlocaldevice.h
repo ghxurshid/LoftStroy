@@ -5,6 +5,7 @@
 #include <QBluetoothSocket>
 #include <QBluetoothDeviceInfo>
 #include <QBluetoothLocalDevice>
+#include <QBluetoothServiceInfo>
 
 class BluetoothLocalDevice : public QObject
 {
@@ -13,6 +14,7 @@ class BluetoothLocalDevice : public QObject
     Q_PROPERTY(int status READ status NOTIFY statusChanged)
 public:
     explicit BluetoothLocalDevice(QObject *parent = nullptr);
+    ~BluetoothLocalDevice();
 
     QString name();
     int status();
@@ -23,7 +25,7 @@ signals:
     void errorOccured(QString message);
 
 public slots:
-    void onButtonClicked();
+    void buttonClick();
     void onSelected(const QBluetoothDeviceInfo deviceInfo);
 
     void onDeviceConnected();
@@ -35,12 +37,12 @@ public slots:
                   bool flatOn,  int entValue,  int floorValue, int flatValue);
 
 protected:
-    void setStatus(int value);
     void connectToSelectedDevice();
+    void disconnectFromSelectedDevice();
 
 private:
     int m_status;
-    QBluetoothSocket m_socket;
+    QBluetoothSocket* m_socket;
     QBluetoothDeviceInfo m_selectedDevice;
     QBluetoothLocalDevice m_localDevice;
 };

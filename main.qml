@@ -32,6 +32,17 @@ ApplicationWindow {
             anchors.margins: 10
             spacing: 10
 
+            Timer {
+                interval: 200
+                repeat: true
+                running: bluetoothDeviceStatus.localDevice.status === 0
+                onTriggered: {
+                    bluetoothDeviceStatus.localDevice.sendData(allCommand.checked, randomCommand.checked,
+                                                               entranceSwitch.checked, floorSwitch.checked, apartmentSwitch.checked,
+                                                               entranceSelect.currentIndex, floorSelect.currentIndex, apartmentSelect.currentIndex)
+                }
+            }
+
             BluetoothDeviceStatus {
                 id: bluetoothDeviceStatus
                 localDevice: BluetoothLocalDevice {}
@@ -76,7 +87,7 @@ ApplicationWindow {
                 }
 
                 SwitchButton {
-
+                    id: entranceSwitch
                 }
             }
 
@@ -98,7 +109,7 @@ ApplicationWindow {
                 }
 
                 SwitchButton {
-
+                    id: floorSwitch
                 }
             }
 
@@ -115,7 +126,7 @@ ApplicationWindow {
                 }
 
                 SwitchButton {
-
+                    id: apartmentSwitch
                 }
             }
         }

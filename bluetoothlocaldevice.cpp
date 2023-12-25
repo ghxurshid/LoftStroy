@@ -9,13 +9,19 @@
 
 BluetoothLocalDevice::BluetoothLocalDevice(QObject *parent) : QObject(parent)
 {
-    setStatus(3);
+    m_socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
 
-    QObject::connect(&m_socket, &QBluetoothSocket::connected, this, &BluetoothLocalDevice::onDeviceConnected);
-    QObject::connect(&m_socket, &QBluetoothSocket::disconnected, this, &BluetoothLocalDevice::onDeviceDisconnected);
-    QObject::connect(&m_socket, &QBluetoothSocket::stateChanged, this, &BluetoothLocalDevice::onStateChanged);
-    QObject::connect(&m_socket, QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error), this, &BluetoothLocalDevice::onErrorOccured);
+    QObject::connect(m_socket, &QBluetoothSocket::connected, this, &BluetoothLocalDevice::onDeviceConnected);
+    QObject::connect(m_socket, &QBluetoothSocket::disconnected, this, &BluetoothLocalDevice::onDeviceDisconnected);
+    QObject::connect(m_socket, &QBluetoothSocket::stateChanged, this, &BluetoothLocalDevice::onStateChanged);
+    QObject::connect(m_socket, QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error), this, &BluetoothLocalDevice::onErrorOccured);
+}
 
+BluetoothLocalDevice::~BluetoothLocalDevice()
+{
+    if (m_socket->isOpen()) m_socket->close();
+    delete m_socket;
+    m_socket = nullptr;
 }
 
 QString BluetoothLocalDevice::name()
@@ -28,94 +34,77 @@ int BluetoothLocalDevice::status()
 {
     int state = 2;
 
-    switch (m_socket.state())
+    switch (m_socket->state())
     {
-    case QBluetoothSocket::UnconnectedState:
-    case QBluetoothSocket::BoundState: state = 2; break;
+        case QBluetoothSocket::UnconnectedState:
+        case QBluetoothSocket::BoundState: state = 2; break;
 
-    case QBluetoothSocket::ServiceLookupState:
-    case QBluetoothSocket::ConnectingState: state = 1; break;
+        case QBluetoothSocket::ServiceLookupState:
+        case QBluetoothSocket::ConnectingState: state = 1; break;
 
-    case QBluetoothSocket::ConnectedState:
-    case QBluetoothSocket::ListeningState:
-    case QBluetoothSocket::ClosingState: state = 0; break;
+        case QBluetoothSocket::ConnectedState:
+        case QBluetoothSocket::ListeningState:
+        case QBluetoothSocket::ClosingState: state = 0; break;
     }
 
     return state;
 }
 
-void BluetoothLocalDevice::onButtonClicked()
+void BluetoothLocalDevice::buttonClick()
 {
-    connectToSelectedDevice();
+    if (m_socket->isOpen())
+        disconnectFromSelectedDevice();
+    else connectToSelectedDevice();
 }
 
 void BluetoothLocalDevice::onErrorOccured(QBluetoothSocket::SocketError error)
 {
-    Q_UNUSED(error);
-    qDebug() << m_socket.errorString();
-    emit errorOccured(m_socket.errorString());
+    Q_UNUSED(error);   
+    emit errorOccured(m_socket->errorString());
 }
 
-void BluetoothLocalDevice::sendData(bool allPressed, bool randPressed, bool entOn, bool floorOn, bool flatOn, int entValue, int floorValue, int flatValue)
+void BluetoothLocalDevice::sendData(bool allPressed, bool randPressed, bool entOn, bool floorOn, bool appatmentOn, int entValue, int floorValue, int apartmentValue)
 {
-    if (m_socket.isOpen() && m_socket.isWritable())
+    if (m_socket->isOpen() && m_socket->isWritable())
     {
-        QChar data[8];
+        QString formatedString = QString("**%1,%2,%3,%4,%5,%6,%7,%8##")
+                                        .arg(allPressed ? "1" : "0")
+                                        .arg(randPressed ? "1" : "0")
+                                        .arg(entOn ? "1" : "0")
+                                        .arg(floorOn ? "1" : "0")
+                                        .arg(appatmentOn ? "1" : "0")
+                                        .arg(entValue > 0 ? entValue : 0)
+                                        .arg(floorValue > 0 ? floorValue : 0)
+                                        .arg(apartmentValue > 0 ? apartmentValue : 0);
 
-        quint8 flags = 0;
-        flags |= allPressed ? (0x01 << 4) : 0x00;
-        flags |= randPressed ? (0x01 << 3) : 0x00;
-        flags |= entOn ? (0x01 << 2) : 0x00;
-        flags |= floorOn ? (0x01 << 1) : 0x00;
-        flags |= flatOn ? (0x01 << 0) : 0x00;
-
-        data[0] = '*';
-        data[0] = '*';
-
-        data[0] = flags;
-        data[0] = static_cast<quint8>(entValue);
-        data[0] = static_cast<quint8>(floorValue);
-        data[0] = static_cast<quint8>(flatValue);
-
-        data[0] = '#';
-        data[0] = '#';
-
-        QString qStringData(data, 8);
-        QByteArray latin1Data = qStringData.toLatin1();
-
-        m_socket.write(latin1Data.constData(), 8);
+        formatedString.push_back('\n');
+        auto packet = formatedString.toUtf8();
+        m_socket->write(packet.constData(), packet.size());
     }
 }
 
 void BluetoothLocalDevice::onSelected(const QBluetoothDeviceInfo deviceInfo)
 {
+    disconnectFromSelectedDevice();
     m_selectedDevice = deviceInfo;
-    qDebug() << deviceInfo.name();
-    emit nameChanged();
     connectToSelectedDevice();
-    //TODO
+
+    emit nameChanged();
 }
 
 void BluetoothLocalDevice::onDeviceConnected()
 {
-    setStatus(0);
     emit statusChanged();
 }
 
 void BluetoothLocalDevice::onDeviceDisconnected()
 {
-    setStatus(3);
     emit statusChanged();
 }
 
 void BluetoothLocalDevice::onStateChanged(QBluetoothSocket::SocketState state)
 {
-
-}
-
-void BluetoothLocalDevice::setStatus(int value)
-{
-    m_status = value < 0 ? 0 : value > 3 ? 3 : value;
+    Q_UNUSED(state)
     emit statusChanged();
 }
 
@@ -123,33 +112,11 @@ void BluetoothLocalDevice::connectToSelectedDevice()
 {
     if (m_selectedDevice.isValid())
     {
-        if (m_localDevice.pairingStatus(m_selectedDevice.address()) == QBluetoothLocalDevice::Unpaired) {
-            m_localDevice.requestPairing(m_selectedDevice.address(), QBluetoothLocalDevice::Paired)
-        }
-        m_socket.connectToService(m_selectedDevice.address(), QBluetoothUuid(QBluetoothUuid::SerialPort));
+        m_socket->connectToService(m_selectedDevice.address(), QBluetoothUuid::SerialPort);
     }
 }
 
-void requestPermissions() {
-#ifdef Q_OS_ANDROID
-    QtAndroid::PermissionResultMap result = QtAndroid::requestPermissionsSync(
-                QStringList() << "android.permission.READ_EXTERNAL_STORAGE" << "android.permission.WRITE_EXTERNAL_STORAGE",
-                QtAndroid::PermissionResultMap());
-
-    // Проверка результатов запроса разрешений
-    if (result["android.permission.READ_EXTERNAL_STORAGE"] == QtAndroid::PermissionResult::Denied) {
-        // Разрешение не предоставлено, обработайте этот случай
-    }
-    // Добавьте обработку других результатов для WRITE_EXTERNAL_STORAGE
-#endif
-
-}
-
-void saveDeviceInfo(const QBluetoothDeviceInfo &device) {
-    QFile file("appdata.dat");
-    if (file.open(QIODevice::WriteOnly)) {
-        QDataStream out(&file);
-        out << m_;
-        file.close();
-    }
+void BluetoothLocalDevice::disconnectFromSelectedDevice()
+{
+    if (m_socket->isOpen()) m_socket->close();
 }
