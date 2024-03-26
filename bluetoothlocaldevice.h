@@ -33,8 +33,7 @@ public slots:
     void onStateChanged(QBluetoothSocket::SocketState state);
     void onErrorOccured(QBluetoothSocket::SocketError error);
 
-    void sendData(bool allPressed, bool randPressed, bool entOn, bool floorOn,
-                  bool flatOn,  int entValue,  int floorValue, int flatValue);
+    void sendData(QString data);
 
 protected:
     void connectToSelectedDevice();

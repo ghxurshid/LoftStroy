@@ -11,10 +11,6 @@ BluetoothDeviceListModel::BluetoothDeviceListModel(QObject *parent)
     QObject::connect(&m_agent, &QBluetoothDeviceDiscoveryAgent::deviceUpdated, this, &BluetoothDeviceListModel::onDeviceUpdated);
     QObject::connect(&m_agent, &QBluetoothDeviceDiscoveryAgent::finished, this, &BluetoothDeviceListModel::onFinished);
 
-    qDebug() << QBluetoothDeviceDiscoveryAgent::supportedDiscoveryMethods();
-    qDebug() << m_agent.inquiryType();
-    qDebug() << m_agent.isActive();
-    qDebug() << m_agent.lowEnergyDiscoveryTimeout();
 
     if (QSysInfo::productType() == "windows")
     {
@@ -22,9 +18,7 @@ BluetoothDeviceListModel::BluetoothDeviceListModel(QObject *parent)
         m_devices.append(QBluetoothDeviceInfo(QBluetoothAddress("55:44:33:22:11:00"), QString("Device 265986522548754123145"), 10));
     }
 
-    m_agent.start();
-
-    qDebug("Discovery agent started");
+    m_agent.start();   
 }
 
 int BluetoothDeviceListModel::rowCount(const QModelIndex &parent) const

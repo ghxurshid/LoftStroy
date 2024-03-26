@@ -6,7 +6,6 @@ import QtGraphicalEffects 1.0
 ComboBox {
     id: selectBox
     anchors.fill: parent
-    anchors.rightMargin: parent.width * 0.20
     background: Rectangle {
         anchors.fill: selectBox
         color: "#2A333A"
@@ -25,7 +24,6 @@ ComboBox {
             radius: 2.0
             samples: 1 + radius * 2
             spread: 0.3
-
         }
     }
 
@@ -53,21 +51,6 @@ ComboBox {
             rotation: 45
         }
     }
-    //        delegate: Item {
-    //            width: parent.width
-    //            height: 40
-    //            Text {
-    //                anchors.centerIn: parent
-    //                text: model.text // Обращение к свойству text напрямую из ListModel
-    //            }
-    //            MouseArea {
-    //                anchors.fill: parent
-    //                onClicked: {
-    //                    parent.currentText = model.text
-    //                }
-    //            }
-    //        }
-
 }
 
 

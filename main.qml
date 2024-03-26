@@ -63,11 +63,26 @@ ApplicationWindow {
             CommandButton {
                 id: allCommand
                 text: qsTr("ALL")
+
+                onClicked: {
+                    var data = allCommand.checked ? "1" : "0"
+                    bluetoothDeviceStatus.localDevice.sendData(data)
+                }
             }
 
             CommandButton {
                 id: randomCommand
                 text: qsTr("RANDOM")
+
+                Timer {
+                    interval: 5000
+                    repeat: true
+                    running: randomCommand.checked
+                    triggeredOnStart: true
+                    onTriggered: {
+                        bluetoothDeviceStatus.localDevice.sendData("7")
+                    }
+                }
             }
 
             Item {
@@ -85,10 +100,6 @@ ApplicationWindow {
                         floorSelect.model = model.get(currentIndex).floorData
                     }
                 }
-
-                SwitchButton {
-                    id: entranceSwitch
-                }
             }
 
             Item {
@@ -101,15 +112,10 @@ ApplicationWindow {
 
                 SelectBox {
                     id: floorSelect
-                    onCurrentIndexChanged: {
-                        console.log(currentIndex)
+                    onCurrentIndexChanged: {                        
                         var flatModel = currentIndex >= 0 ? model.get(currentIndex).flatData : null
                         apartmentSelect.model = flatModel
                     }
-                }
-
-                SwitchButton {
-                    id: floorSwitch
                 }
             }
 
@@ -123,10 +129,13 @@ ApplicationWindow {
 
                 SelectBox {
                     id: apartmentSelect
-                }
-
-                SwitchButton {
-                    id: apartmentSwitch
+                    onCurrentIndexChanged: {
+                        if (currentIndex > 0)
+                        {
+                            var command = model.get(currentIndex).command
+                            bluetoothDeviceStatus.localDevice.sendData(command)
+                        }
+                    }
                 }
             }
         }

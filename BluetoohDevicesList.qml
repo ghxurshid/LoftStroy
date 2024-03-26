@@ -132,10 +132,6 @@ ListView {
                 pixelSize: 16
                 bold: true
             }
-
-            Component.onCompleted: {
-                console.log(rssi.width)
-            }
         }
         MouseArea {
             anchors.fill: parent
